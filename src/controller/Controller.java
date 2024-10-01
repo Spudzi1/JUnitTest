@@ -64,7 +64,12 @@ public abstract class Controller {
      * kastes en IllegalArgumentException.
      */
     public static void anvendOrdinationPN(PN ordination, LocalDate dato) {
-
+        if ((dato.isEqual(ordination.getStartDato()) || dato.isAfter(ordination.getStartDato())) &&
+                (dato.isEqual(ordination.getSlutDato()) || dato.isBefore(ordination.getSlutDato()))) {
+            ordination.anvendDosis(dato);
+        } else {
+            throw new IllegalArgumentException("Datoen ligger uden for ordinationens start- og slutdato.");
+        }
     }
 
     /**
