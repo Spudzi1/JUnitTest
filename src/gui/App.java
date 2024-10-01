@@ -12,7 +12,14 @@ public class App {
 		Controller.initStorage();
 
 		Application.launch(StartVindue.class);
+
+		//test
 	}
 
 	//Test
+	//Test2
+
+	//TEst3
+
+	//Test4
 }
