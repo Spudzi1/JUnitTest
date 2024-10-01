@@ -27,11 +27,11 @@ public class Patient {
         return navn + "  " + cprNr;
     }
 
-    public void addOrdaination(Ordination ordination){
+    public void addOrdination(Ordination ordination){
         ordinationer.add(ordination);
     }
 
-    public void removeOrdaination(Ordination ordination){
+    public void removeOrdination(Ordination ordination){
         ordinationer.remove(ordination);
     }
 }
