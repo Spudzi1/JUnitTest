@@ -87,7 +87,7 @@ public class OrdinationDetailsPane extends GridPane {
         datePicker.setMaxWidth(90);
 
         btnAnvend.setOnAction(event -> actionAnvend());
-        
+
         lblError.setTextFill(Color.RED);
         pnPane.add(lblError, 0, 8, 2, 1);
     }
@@ -97,18 +97,17 @@ public class OrdinationDetailsPane extends GridPane {
         LocalDate anvendtDato = datePicker.getValue();
         try {
             Controller.anvendOrdinationPN(pn, anvendtDato);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             lblError.setText(e.getMessage());
             return;
         }
         txtAnvendt.setText(pn.antalGangeAnvendt() + " gange");
         txtDosis.setText(pn.getAntalEnheder() + "");
 
-        txtDøgndosis.setText(pn.doegnDosis() + " "
-            + pn.getLaegemiddel().getEnhed());
+        txtDøgndosis.setText(pn.døgnDosis() + " "
+                + pn.getLægemiddel().getEnhed());
         txtTotalDosis.setText(pn.samletDosis() + " "
-            + pn.getLaegemiddel().getEnhed());
+                + pn.getLægemiddel().getEnhed());
     }
 
     public void clear() {
@@ -127,7 +126,7 @@ public class OrdinationDetailsPane extends GridPane {
         txtType.setText(ordination.getType());
         txtStarttid.setText(ordination.getStartDato().toString());
         txtSluttid.setText(ordination.getSlutDato().toString());
-        txtLægemiddel.setText(ordination.getLaegemiddel().toString());
+        txtLægemiddel.setText(ordination.getLægemiddel().toString());
         txtDøgndosis.setText(ordination.døgnDosis() + "");
         txtTotalDosis.setText(ordination.samletDosis() + "");
     }
