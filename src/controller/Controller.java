@@ -51,11 +51,19 @@ public abstract class Controller {
     public static DagligSkæv opretDagligSkævOrdination(
             LocalDate startDen, LocalDate slutDen, Patient patient, Lægemiddel lægemiddel,
             LocalTime[] klokkeSlet, double[] antalEnheder) {
-            Ordination dagligSkæv = new DagligSkæv(startDen, slutDen);
+            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen);
             dagligSkæv.setLægemiddel(lægemiddel);
-            Dosis dosis = new Dosis(klokkeSlet, antalEnheder);
 
-        return null;
+        for (int i = 0; i < klokkeSlet.length; i++) {
+            LocalTime tid = klokkeSlet[i];
+            double antal = antalEnheder[i];
+
+            Dosis dosis = new Dosis(tid, antal, dagligSkæv, null);
+            dagligSkæv.addDosis(dosis);
+            }
+        patient.addOrdination(dagligSkæv);
+
+        return dagligSkæv;
     }
 
     /**
