@@ -1,9 +1,16 @@
 package ordination;
 
+import java.util.ArrayList;
+
 public class Patient {
     private final String cprNr;
     private final String navn;
     private final double vægt;
+    private final ArrayList<Ordination> ordinationer = new ArrayList<>();
+
+    public ArrayList<Ordination> getOrdinationer() {
+        return new ArrayList<>(ordinationer);
+    }
 
     public Patient(String cprNr, String navn, double vægt) {
         this.cprNr = cprNr;
@@ -18,5 +25,13 @@ public class Patient {
     @Override
     public String toString() {
         return navn + "  " + cprNr;
+    }
+
+    public void addOrdaination(Ordination ordination){
+        ordinationer.add(ordination);
+    }
+
+    public void removeOrdaination(Ordination ordination){
+        ordinationer.remove(ordination);
     }
 }
