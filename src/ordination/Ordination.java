@@ -47,8 +47,8 @@ public abstract class Ordination {
 
     /** Returner Lægemidlet som en string
      * Note: Nullable return value. */
-    public String getLægemiddel() {
-        return lægemiddel.toString();
+    public Lægemiddel getLægemiddel() {
+        return lægemiddel;
     }
 
     /** Note: Nullable param lægemiddel */
