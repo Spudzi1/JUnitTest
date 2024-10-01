@@ -1,11 +1,11 @@
 package controller;
 
+import ordination.*;
+import storage.Storage;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-
-import ordination.*;
-import storage.Storage;
 
 public abstract class Controller {
     private static Storage storage;
@@ -72,7 +72,12 @@ public abstract class Controller {
      * kastes en IllegalArgumentException.
      */
     public static void anvendOrdinationPN(PN ordination, LocalDate dato) {
-
+        if ((dato.isEqual(ordination.getStartDato()) || dato.isAfter(ordination.getStartDato())) &&
+                (dato.isEqual(ordination.getSlutDato()) || dato.isBefore(ordination.getSlutDato()))) {
+            ordination.anvendDosis(dato);
+        } else {
+            throw new IllegalArgumentException("Datoen ligger uden for ordinationens start- og slutdato.");
+        }
     }
 
     /**
@@ -80,15 +85,34 @@ public abstract class Controller {
      * (afhænger af patientens vægt).
      */
     public static double anbefaletDosisPrDøgn(Patient patient, Lægemiddel lægemiddel) {
+        double enhed = lægemiddel.getEnhedPrKgPrDøgnLet();
 
-        return 0;
+        if (patient.getVægt() < 25) {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnLet();
+        } else if (patient.getVægt() >= 25 && patient.getVægt() <= 120) {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnNormal();
+        } else {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnTung();
+        }
+        return enhed;
     }
 
-    /** Returner antal ordinationer for det givne vægtinterval og det givne lægemiddel. */
+    /**
+     * Returner antal ordinationer for det givne vægtinterval og det givne lægemiddel.
+     */
     public static int antalOrdinationerPrVægtPrLægemiddel(
             double vægtStart, double vægtSlut, Lægemiddel lægemiddel) {
 
-        return 0;
+        int antalOrdinationer = 0;
+
+        for (Patient patient : storage.getAllPatienter()) {
+            if (patient.getVægt() > vægtSlut && patient.getVægt() < vægtSlut && lægemiddel == lægemiddel) {
+                for (Ordination ordination : patient.getOrdinationer()) {
+                    antalOrdinationer++;
+                }
+            }
+        }
+        return antalOrdinationer;
     }
 
     public static List<Patient> getAllPatienter() {

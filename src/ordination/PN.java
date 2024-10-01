@@ -1,5 +1,7 @@
 package ordination;
 
+import controller.Controller;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +24,7 @@ public class PN extends Ordination {
      * Registrer datoen for en anvendt dosis.
      */
     public void anvendDosis(LocalDate dato) {
-        if ((dato.isEqual(getStartDato()) || dato.isAfter(getStartDato())) &&
-                (dato.isEqual(getSlutDato()) || dato.isBefore(getSlutDato()))) {
-            anvendteDoser.add(dato);
-        } else {
-            throw new IllegalArgumentException("Datoen ligger uden for ordinationens start- og slutdato.");
-        }
+        anvendteDoser.add(dato);
     }
 
     /** Returner antal gange ordinationen er anvendt. */
