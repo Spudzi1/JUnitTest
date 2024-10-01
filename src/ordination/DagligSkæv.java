@@ -9,7 +9,7 @@ public class DagligSkæv extends Ordination  {
 
   private final  List<Dosis> doser = new ArrayList<>();
 
-    protected DagligSkæv(LocalDate startDato, LocalDate slutDato) {
+    public DagligSkæv(LocalDate startDato, LocalDate slutDato) {
         super(startDato, slutDato);
     }
 

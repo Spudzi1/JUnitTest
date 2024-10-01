@@ -51,6 +51,9 @@ public abstract class Controller {
     public static DagligSkæv opretDagligSkævOrdination(
             LocalDate startDen, LocalDate slutDen, Patient patient, Lægemiddel lægemiddel,
             LocalTime[] klokkeSlet, double[] antalEnheder) {
+            Ordination dagligSkæv = new DagligSkæv(startDen, slutDen);
+            dagligSkæv.setLægemiddel(lægemiddel);
+            Dosis dosis = new Dosis(klokkeSlet, antalEnheder);
 
         return null;
     }
@@ -61,7 +64,12 @@ public abstract class Controller {
      * kastes en IllegalArgumentException.
      */
     public static void anvendOrdinationPN(PN ordination, LocalDate dato) {
-
+        if ((dato.isEqual(ordination.getStartDato()) || dato.isAfter(ordination.getStartDato())) &&
+                (dato.isEqual(ordination.getSlutDato()) || dato.isBefore(ordination.getSlutDato()))) {
+            ordination.anvendDosis(dato);
+        } else {
+            throw new IllegalArgumentException("Datoen ligger uden for ordinationens start- og slutdato.");
+        }
     }
 
     /**
