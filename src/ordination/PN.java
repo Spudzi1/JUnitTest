@@ -40,6 +40,7 @@ public class PN extends Ordination {
         return antalEnheder * antalGangeAnvendt();
     }
 
+    @Override
     public double døgnDosis(){
         return samletDosis() / antalDage();
     }
