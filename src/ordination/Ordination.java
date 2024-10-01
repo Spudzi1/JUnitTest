@@ -45,7 +45,7 @@ public abstract class Ordination {
     /** Returner ordinationstypen som en String. */
     public abstract String getType();
 
-    /** Returner Lægemidlet som en string
+    /** Returner Lægemidlet
      * Note: Nullable return value. */
     public Lægemiddel getLægemiddel() {
         return lægemiddel;
