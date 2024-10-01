@@ -89,7 +89,7 @@ public abstract class Controller {
 
         int antalOrdinationer = 0;
 
-        for (Patient patient : Controller.getAllPatienter()) {
+        for (Patient patient : storage.getAllPatienter()) {
             if (patient.getVægt() > vægtSlut && patient.getVægt() < vægtSlut && lægemiddel == lægemiddel) {
                 for (Ordination ordination : patient.getOrdinationer()) {
                     antalOrdinationer++;
