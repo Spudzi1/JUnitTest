@@ -1,16 +1,54 @@
 package ordination;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class DagligFast extends Ordination {
-    private final Dosis[] doser = new Dosis[4];
+    private Dosis[] doser = new Dosis[4];
 
-    public DagligFast(LocalDate startDato, LocalDate slutDato){
-        super(startDato, slutDato);
+    public DagligFast(LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel, double morgenDosis, double middagDosis, double aftenDosis, double natDosis) {
+        super(startDato, slutDato, patient, lægemiddel);
+        doser = new Dosis[4];
+
+        if (morgenDosis>=0) {
+            doser[0] = new Dosis(LocalTime.of(9,0), morgenDosis, null, this);
+        }
+        if (middagDosis>=0) {
+            doser[1] = new Dosis(LocalTime.of(12,0), middagDosis, null, this);
+        }
+        if (aftenDosis>=0) {
+            doser[2] = new Dosis(LocalTime.of(18,0), aftenDosis, null, this);
+        }
+        if (natDosis>=0) {
+            doser[3] = new Dosis(LocalTime.of(21,0), natDosis, null, this);
+        }
     }
 
     public Dosis[] getDoser() {
         return doser;
+    }
+
+    /**
+     * Opretter en dosis og returnerer den
+     * @param tid
+     * @param antal
+     * @return
+     */
+
+    public Dosis createDosis(LocalTime tid, double antal) {
+        if (antal <= 0) {
+            return null;
+        } else {
+            Dosis dosis = new Dosis(tid, antal, null, this);
+            for (int i = 0; i < doser.length; i++) {
+                if (doser[i] == null) {
+                    doser[i] = dosis;
+                    return dosis;
+                }
+            }
+            return null;
+        }
     }
 
     public void addDosis(Dosis dosis, int index) {
@@ -25,22 +63,35 @@ public class DagligFast extends Ordination {
         doser[index] = null;
     }
 
+    /** Returner den totale dosis, der er givet i den periode, ordinationen er gyldig. */
     @Override
     public double samletDosis(){
-        double totalDosis = 0;
+        // Tjek at den samlede dosis per døgn ikke overstiger 4
+        double dagligDosis = 0;
         for (Dosis dosis : doser) {
-            if (dosis != null) {
-                totalDosis += dosis.getAntal();
-            }
+            dagligDosis += dosis.getAntal();
         }
-        return totalDosis;
+        if (dagligDosis > 4) {
+            throw new IllegalArgumentException("Samlet antal dosis må højest være 4 pr døgn");
+        }
+
+        // Tjek at startdatoen er før slutdatoen
+        if (super.getStartDato().isAfter(super.getSlutDato())) {
+            throw new IllegalArgumentException("Slut datoen er før start datoen");
+        }
+
+        // Beregn antal dage og den samlede dosis over perioden
+        long daysBetween = ChronoUnit.DAYS.between(getStartDato(), getSlutDato()) + 1;
+        return daysBetween * dagligDosis;
     }
 
+    /** Returner den gennemsnitlige dosis givet per dag. */
     @Override
     public double døgnDosis(){
         return samletDosis() / antalDage();
     }
 
+    /** Returner ordinationstypen som en String. */
     @Override
     public String getType(){
         return "Daglig fast: ";
