@@ -1,11 +1,11 @@
 package controller;
 
+import ordination.*;
+import storage.Storage;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-
-import ordination.*;
-import storage.Storage;
 
 public abstract class Controller {
     private static Storage storage;
@@ -51,11 +51,19 @@ public abstract class Controller {
     public static DagligSkæv opretDagligSkævOrdination(
             LocalDate startDen, LocalDate slutDen, Patient patient, Lægemiddel lægemiddel,
             LocalTime[] klokkeSlet, double[] antalEnheder) {
-            Ordination dagligSkæv = new DagligSkæv(startDen, slutDen);
+            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen);
             dagligSkæv.setLægemiddel(lægemiddel);
-            Dosis dosis = new Dosis(klokkeSlet, antalEnheder);
 
-        return null;
+        for (int i = 0; i < klokkeSlet.length; i++) {
+            LocalTime tid = klokkeSlet[i];
+            double antal = antalEnheder[i];
+
+            Dosis dosis = new Dosis(tid, antal, dagligSkæv, null);
+            dagligSkæv.addDosis(dosis);
+            }
+        patient.addOrdination(dagligSkæv);
+
+        return dagligSkæv;
     }
 
     /**
@@ -77,15 +85,34 @@ public abstract class Controller {
      * (afhænger af patientens vægt).
      */
     public static double anbefaletDosisPrDøgn(Patient patient, Lægemiddel lægemiddel) {
+        double enhed = lægemiddel.getEnhedPrKgPrDøgnLet();
 
-        return 0;
+        if (patient.getVægt() < 25) {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnLet();
+        } else if (patient.getVægt() >= 25 && patient.getVægt() <= 120) {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnNormal();
+        } else {
+            enhed = lægemiddel.getEnhedPrKgPrDøgnTung();
+        }
+        return enhed;
     }
 
-    /** Returner antal ordinationer for det givne vægtinterval og det givne lægemiddel. */
+    /**
+     * Returner antal ordinationer for det givne vægtinterval og det givne lægemiddel.
+     */
     public static int antalOrdinationerPrVægtPrLægemiddel(
             double vægtStart, double vægtSlut, Lægemiddel lægemiddel) {
 
-        return 0;
+        int antalOrdinationer = 0;
+
+        for (Patient patient : storage.getAllPatienter()) {
+            if (patient.getVægt() > vægtSlut && patient.getVægt() < vægtSlut && lægemiddel == lægemiddel) {
+                for (Ordination ordination : patient.getOrdinationer()) {
+                    antalOrdinationer++;
+                }
+            }
+        }
+        return antalOrdinationer;
     }
 
     public static List<Patient> getAllPatienter() {
