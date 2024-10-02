@@ -13,6 +13,18 @@ public class DagligFast extends Ordination {
         return doser;
     }
 
+    public void addDosis(Dosis dosis, int index) {
+        if (index < 0 || index >= doser.length) {
+        }
+        doser[index] = dosis;
+    }
+
+    public void removeDosis(int index) {
+        if (index < 0 || index >= doser.length) {
+        }
+        doser[index] = null;
+    }
+
     @Override
     public double samletDosis(){
         double totalDosis = 0;
