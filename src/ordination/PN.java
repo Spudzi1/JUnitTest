@@ -20,6 +20,18 @@ public class PN extends Ordination {
         return antalEnheder;
     }
 
+    public List<LocalDate> getAnvendteDoser(){
+        return new ArrayList<>(anvendteDoser);
+    }
+
+    public void addAnvendtDosis(LocalDate dato){
+        anvendteDoser.add(dato);
+    }
+
+    public void removeAnvendtDosis(LocalDate dato){
+        anvendteDoser.remove(dato);
+    }
+
     /**
      * Registrer datoen for en anvendt dosis.
      */
