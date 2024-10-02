@@ -9,10 +9,15 @@ public abstract class Ordination {
     private final LocalDate startDato;
     private final LocalDate slutDato;
     private Lægemiddel lægemiddel;
+    private Patient patient;
 
-    protected Ordination(LocalDate startDato, LocalDate slutDato) {
+    protected Ordination(LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel) {
         this.startDato = startDato;
         this.slutDato = slutDato;
+        this.patient = patient;
+        this.lægemiddel = lægemiddel;
+//        setLægemiddel(lægemiddel); //Sikrer at ordinationen er tilknyttet det korrekte lægemiddel
+//        patient.addOrdination(this); //Tilføjer ordinationen til patientens liste af ordinationer
     }
 
     public LocalDate getStartDato() {

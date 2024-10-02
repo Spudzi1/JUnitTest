@@ -5,3 +5,4 @@ out/
 
 ### Mac OS ###
 .DS_Store
+/src/test/DagligFastTest.java

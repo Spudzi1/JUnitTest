@@ -28,7 +28,7 @@ public abstract class Controller {
         } else if (antal <= 0){
             throw new IllegalArgumentException("Antallet på ordinationen skal være større end 0");
         } else {
-            PN pn = new PN(startDato, slutDato, antal);
+            PN pn = new PN(startDato, slutDato, antal, patient, lægemiddel);
             pn.setLægemiddel(lægemiddel);
             patient.addOrdination(pn);
             return pn;
@@ -60,7 +60,7 @@ public abstract class Controller {
     public static DagligSkæv opretDagligSkævOrdination(
             LocalDate startDen, LocalDate slutDen, Patient patient, Lægemiddel lægemiddel,
             LocalTime[] klokkeSlet, double[] antalEnheder) {
-            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen);
+            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen, patient, lægemiddel);
             dagligSkæv.setLægemiddel(lægemiddel);
 
         for (int i = 0; i < klokkeSlet.length; i++) {
