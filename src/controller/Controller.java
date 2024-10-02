@@ -23,8 +23,17 @@ public abstract class Controller {
     public static PN opretPNOrdination(
             LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel,
             double antal) {
+        if(startDato.isAfter(slutDato)) {
+            throw new IllegalArgumentException("Startdato er efter slutdato og du kan derfor ikke oprette ordinationen");
+        } else if (antal <= 0){
+            throw new IllegalArgumentException("Antallet på ordinationen skal være større end 0");
+        } else {
+            PN pn = new PN(startDato, slutDato, antal);
+            pn.setLægemiddel(lægemiddel);
+            patient.addOrdination(pn);
+            return pn;
 
-        return null;
+        }
     }
 
     /**
