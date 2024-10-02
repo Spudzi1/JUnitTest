@@ -16,8 +16,6 @@ public abstract class Ordination {
         this.slutDato = slutDato;
         this.patient = patient;
         this.lægemiddel = lægemiddel;
-//        setLægemiddel(lægemiddel); //Sikrer at ordinationen er tilknyttet det korrekte lægemiddel
-//        patient.addOrdination(this); //Tilføjer ordinationen til patientens liste af ordinationer
     }
 
     public LocalDate getStartDato() {

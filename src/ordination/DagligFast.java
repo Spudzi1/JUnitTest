@@ -72,12 +72,12 @@ public class DagligFast extends Ordination {
             dagligDosis += dosis.getAntal();
         }
         if (dagligDosis > 4) {
-            throw new IllegalArgumentException("Samlet antal dosis må højest være 4 pr døgn");
+            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må højest være 4 doser pr. døgn");
         }
 
         // Tjek at startdatoen er før slutdatoen
         if (super.getStartDato().isAfter(super.getSlutDato())) {
-            throw new IllegalArgumentException("Slut datoen er før start datoen");
+            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre fordi slut datoen er før start datoen");
         }
 
         // Beregn antal dage og den samlede dosis over perioden
@@ -88,7 +88,11 @@ public class DagligFast extends Ordination {
     /** Returner den gennemsnitlige dosis givet per dag. */
     @Override
     public double døgnDosis(){
-        return samletDosis() / antalDage();
+        if ((doser[0].getAntal() + doser[1].getAntal() +
+                doser[2].getAntal() + doser[3].getAntal()) > 4) {
+            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre fordi døgn dosisen er for over 4 pr. døgn");
+        }
+        return doser[0].getAntal() + doser[1].getAntal() + doser[2].getAntal() + doser[3].getAntal();
     }
 
     /** Returner ordinationstypen som en String. */
