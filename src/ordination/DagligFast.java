@@ -12,7 +12,7 @@ public class DagligFast extends Ordination {
         doser = new Dosis[4];
 
         if (morgenDosis>=0) {
-            doser[0] = new Dosis(LocalTime.of(9,0), morgenDosis, null, this);
+            doser[0] = new Dosis(LocalTime.of(6,0), morgenDosis, null, this);
         }
         if (middagDosis>=0) {
             doser[1] = new Dosis(LocalTime.of(12,0), middagDosis, null, this);
@@ -27,28 +27,6 @@ public class DagligFast extends Ordination {
 
     public Dosis[] getDoser() {
         return doser;
-    }
-
-    /**
-     * Opretter en dosis og returnerer den
-     * @param tid
-     * @param antal
-     * @return
-     */
-
-    public Dosis createDosis(LocalTime tid, double antal) {
-        if (antal <= 0) {
-            return null;
-        } else {
-            Dosis dosis = new Dosis(tid, antal, null, this);
-            for (int i = 0; i < doser.length; i++) {
-                if (doser[i] == null) {
-                    doser[i] = dosis;
-                    return dosis;
-                }
-            }
-            return null;
-        }
     }
 
     public void addDosis(Dosis dosis, int index) {
