@@ -28,7 +28,7 @@ public abstract class Controller {
         } else if (antal <= 0){
             throw new IllegalArgumentException("Antallet på ordinationen skal være større end 0");
         } else {
-            PN pn = new PN(startDato, slutDato, antal, patient, lægemiddel);
+            PN pn = new PN(startDato, slutDato, antal, lægemiddel);
             pn.setLægemiddel(lægemiddel);
             patient.addOrdination(pn);
             return pn;
@@ -46,7 +46,16 @@ public abstract class Controller {
             LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel,
             double morgenAntal, double middagAntal, double aftenAntal, double natAntal) {
 
-        return null;
+        if (startDato.isAfter(slutDato)) {
+            throw new IllegalArgumentException("Ordinationen kan desværre ikke oprettes fordi startdato er efter slutdato");
+        }
+        if (morgenAntal < 0 || middagAntal < 0 || aftenAntal < 0 || natAntal < 0) {
+            throw new IllegalArgumentException("Ordinationen kan ikke oprettes fordi doserne skal være større end eller lig med 0");
+        }
+
+        DagligFast dagligFast = new DagligFast(startDato, slutDato, lægemiddel, morgenAntal, middagAntal, aftenAntal, natAntal);
+        patient.addOrdination(dagligFast);
+        return dagligFast;
     }
 
     /**

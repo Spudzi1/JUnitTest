@@ -3,13 +3,15 @@ package ordination;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DagligFast extends Ordination {
     private Dosis[] doser = new Dosis[4];
 
     public DagligFast(LocalDate startDato, LocalDate slutDato, Lægemiddel lægemiddel, double morgenDosis, double middagDosis, double aftenDosis, double natDosis) {
         super(startDato, slutDato, lægemiddel);
-        doser = new Dosis[4];
+       doser = new Dosis[4];
 
         if (morgenDosis>=0) {
             doser[0] = new Dosis(LocalTime.of(6,0), morgenDosis, null, this);
@@ -29,6 +31,7 @@ public class DagligFast extends Ordination {
         return doser;
     }
 
+
     /** Returner den totale dosis, der er givet i den periode, ordinationen er gyldig. */
     @Override
     public double samletDosis(){
@@ -36,9 +39,6 @@ public class DagligFast extends Ordination {
         double dagligDosis = 0;
         for (Dosis dosis : doser) {
             dagligDosis += dosis.getAntal();
-        }
-        if (dagligDosis > 4) {
-            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må højest være 4 doser pr. døgn");
         }
 
         // Tjek at startdatoen er før slutdatoen
@@ -54,11 +54,16 @@ public class DagligFast extends Ordination {
     /** Returner den gennemsnitlige dosis givet per dag. */
     @Override
     public double døgnDosis(){
-        if ((doser[0].getAntal() + doser[1].getAntal() +
-                doser[2].getAntal() + doser[3].getAntal()) > 4) {
-            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre fordi døgn dosisen er for over 4 pr. døgn");
+        double totalDosis = 0;
+        for (Dosis dosis : doser) {
+            if (dosis.getAntal() < 0) {
+                throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må mindst være 0 doser pr. døgn");
+            }
+            totalDosis += dosis.getAntal();
         }
-        return doser[0].getAntal() + doser[1].getAntal() + doser[2].getAntal() + doser[3].getAntal();
+        long daysBetween = ChronoUnit.DAYS.between(getStartDato(), getSlutDato()) + 1;
+        return totalDosis / daysBetween;
+
     }
 
     /** Returner ordinationstypen som en String. */
