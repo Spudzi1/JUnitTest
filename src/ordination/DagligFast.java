@@ -11,17 +11,17 @@ public class DagligFast extends Ordination {
         super(startDato, slutDato, patient, lægemiddel);
         doser = new Dosis[4];
 
-        if (morgenDosis>=0) {
-            doser[0] = new Dosis(LocalTime.of(9,0), morgenDosis, null, this);
+        if (morgenDosis >= 0) {
+            doser[0] = new Dosis(LocalTime.of(9, 0), morgenDosis, null, this);
         }
-        if (middagDosis>=0) {
-            doser[1] = new Dosis(LocalTime.of(12,0), middagDosis, null, this);
+        if (middagDosis >= 0) {
+            doser[1] = new Dosis(LocalTime.of(12, 0), middagDosis, null, this);
         }
-        if (aftenDosis>=0) {
-            doser[2] = new Dosis(LocalTime.of(18,0), aftenDosis, null, this);
+        if (aftenDosis >= 0) {
+            doser[2] = new Dosis(LocalTime.of(18, 0), aftenDosis, null, this);
         }
-        if (natDosis>=0) {
-            doser[3] = new Dosis(LocalTime.of(21,0), natDosis, null, this);
+        if (natDosis >= 0) {
+            doser[3] = new Dosis(LocalTime.of(21, 0), natDosis, null, this);
         }
     }
 
@@ -31,6 +31,7 @@ public class DagligFast extends Ordination {
 
     /**
      * Opretter en dosis og returnerer den
+     *
      * @param tid
      * @param antal
      * @return
@@ -63,9 +64,11 @@ public class DagligFast extends Ordination {
         doser[index] = null;
     }
 
-    /** Returner den totale dosis, der er givet i den periode, ordinationen er gyldig. */
+    /**
+     * Returner den totale dosis, der er givet i den periode, ordinationen er gyldig.
+     */
     @Override
-    public double samletDosis(){
+    public double samletDosis() {
         // Tjek at den samlede dosis per døgn ikke overstiger 4
         double dagligDosis = 0;
         for (Dosis dosis : doser) {
@@ -73,6 +76,9 @@ public class DagligFast extends Ordination {
         }
         if (dagligDosis > 4) {
             throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må højest være 4 doser pr. døgn");
+        }
+        if (dagligDosis < 0) {
+            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må mindst være 0 doser pr. døgn");
         }
 
         // Tjek at startdatoen er før slutdatoen
@@ -85,20 +91,26 @@ public class DagligFast extends Ordination {
         return daysBetween * dagligDosis;
     }
 
-    /** Returner den gennemsnitlige dosis givet per dag. */
+    /**
+     * Returner den gennemsnitlige dosis givet per dag.
+     */
     @Override
-    public double døgnDosis(){
+    public double døgnDosis() {
         if ((doser[0].getAntal() + doser[1].getAntal() +
                 doser[2].getAntal() + doser[3].getAntal()) > 4) {
             throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre fordi døgn dosisen er for over 4 pr. døgn");
         }
-        return doser[0].getAntal() + doser[1].getAntal() + doser[2].getAntal() + doser[3].getAntal();
-    }
+            if (doser.length < 0) {
+                throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må mindst være 0 doser pr. døgn");
+            }
+            return doser[0].getAntal() + doser[1].getAntal() + doser[2].getAntal() + doser[3].getAntal();
+}
 
     /** Returner ordinationstypen som en String. */
     @Override
     public String getType(){
         return "Daglig fast: ";
     }
+
 
 }
