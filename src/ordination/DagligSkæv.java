@@ -9,8 +9,8 @@ public class DagligSkæv extends Ordination  {
 
   private final  List<Dosis> doser = new ArrayList<>();
 
-    public DagligSkæv(LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel) {
-        super(startDato, slutDato, patient, lægemiddel);
+    public DagligSkæv(LocalDate startDato, LocalDate slutDato, Lægemiddel lægemiddel) {
+        super(startDato, slutDato, lægemiddel);
     }
 
     public List<Dosis> getDoser() {

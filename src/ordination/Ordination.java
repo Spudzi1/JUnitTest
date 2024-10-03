@@ -11,10 +11,9 @@ public abstract class Ordination {
     private Lægemiddel lægemiddel;
     private Patient patient;
 
-    protected Ordination(LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel) {
+    protected Ordination(LocalDate startDato, LocalDate slutDato, Lægemiddel lægemiddel) {
         this.startDato = startDato;
         this.slutDato = slutDato;
-        this.patient = patient;
         this.lægemiddel = lægemiddel;
     }
 

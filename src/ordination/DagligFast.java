@@ -7,8 +7,8 @@ import java.time.temporal.ChronoUnit;
 public class DagligFast extends Ordination {
     private Dosis[] doser = new Dosis[4];
 
-    public DagligFast(LocalDate startDato, LocalDate slutDato, Patient patient, Lægemiddel lægemiddel, double morgenDosis, double middagDosis, double aftenDosis, double natDosis) {
-        super(startDato, slutDato, patient, lægemiddel);
+    public DagligFast(LocalDate startDato, LocalDate slutDato, Lægemiddel lægemiddel, double morgenDosis, double middagDosis, double aftenDosis, double natDosis) {
+        super(startDato, slutDato, lægemiddel);
         doser = new Dosis[4];
 
         if (morgenDosis>=0) {
@@ -27,18 +27,6 @@ public class DagligFast extends Ordination {
 
     public Dosis[] getDoser() {
         return doser;
-    }
-
-    public void addDosis(Dosis dosis, int index) {
-        if (index < 0 || index >= doser.length) {
-        }
-        doser[index] = dosis;
-    }
-
-    public void removeDosis(int index) {
-        if (index < 0 || index >= doser.length) {
-        }
-        doser[index] = null;
     }
 
     /** Returner den totale dosis, der er givet i den periode, ordinationen er gyldig. */

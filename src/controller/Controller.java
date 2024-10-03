@@ -66,8 +66,7 @@ public abstract class Controller {
         } else if (klokkeSlet.length != antalEnheder.length) {
             throw new IllegalArgumentException("Forskel i antal tidspunkter og antal enheder");
         } else {
-            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen, patient, lægemiddel);
-            dagligSkæv.setLægemiddel(lægemiddel);
+            DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen,lægemiddel);
 
                 for (int i = 0; i < klokkeSlet.length; i++) {
                     LocalTime tid = klokkeSlet[i];
