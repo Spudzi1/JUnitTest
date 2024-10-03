@@ -33,7 +33,6 @@ public abstract class Controller {
             patient.addOrdination(pn);
             return pn;
 
-
         }
     }
 
@@ -61,19 +60,25 @@ public abstract class Controller {
     public static DagligSkæv opretDagligSkævOrdination(
             LocalDate startDen, LocalDate slutDen, Patient patient, Lægemiddel lægemiddel,
             LocalTime[] klokkeSlet, double[] antalEnheder) {
+
+        if(startDen.isAfter(slutDen)) {
+            throw new IllegalArgumentException("Startdato er efter slutdato og du kan derfor ikke oprette ordinationen");
+        } else if (klokkeSlet.length != antalEnheder.length) {
+            throw new IllegalArgumentException("Forskel i antal tidspunkter og antal enheder");
+        } else {
             DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen, patient, lægemiddel);
             dagligSkæv.setLægemiddel(lægemiddel);
 
-        for (int i = 0; i < klokkeSlet.length; i++) {
-            LocalTime tid = klokkeSlet[i];
-            double antal = antalEnheder[i];
+                for (int i = 0; i < klokkeSlet.length; i++) {
+                    LocalTime tid = klokkeSlet[i];
+                    double antal = antalEnheder[i];
 
-            Dosis dosis = new Dosis(tid, antal, dagligSkæv, null);
-            dagligSkæv.addDosis(dosis);
+                    Dosis dosis = new Dosis(tid, antal, dagligSkæv, null);
+                    dagligSkæv.addDosis(dosis);
+                }
+                patient.addOrdination(dagligSkæv);
             }
-        patient.addOrdination(dagligSkæv);
-
-        return dagligSkæv;
+        return null;
     }
 
     /**
