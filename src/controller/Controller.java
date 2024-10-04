@@ -47,10 +47,10 @@ public abstract class Controller {
             double morgenAntal, double middagAntal, double aftenAntal, double natAntal) {
 
         if (startDato.isAfter(slutDato)) {
-            throw new IllegalArgumentException("Ordinationen kan desværre ikke oprettes fordi startdato er efter slutdato");
+            throw new IllegalArgumentException("Slutdato skal være efter startdato");
         }
         if (morgenAntal < 0 || middagAntal < 0 || aftenAntal < 0 || natAntal < 0) {
-            throw new IllegalArgumentException("Ordinationen kan ikke oprettes fordi doserne skal være større end eller lig med 0");
+            throw new IllegalArgumentException("Doserne skal være større end eller lig med 0");
         }
 
         DagligFast dagligFast = new DagligFast(startDato, slutDato, lægemiddel, morgenAntal, middagAntal, aftenAntal, natAntal);
@@ -72,9 +72,10 @@ public abstract class Controller {
 
         if(startDen.isAfter(slutDen)) {
             throw new IllegalArgumentException("Startdato er efter slutdato og du kan derfor ikke oprette ordinationen");
-        } else if (klokkeSlet.length != antalEnheder.length) {
+        }
+        if (klokkeSlet.length != antalEnheder.length) {
             throw new IllegalArgumentException("Forskel i antal tidspunkter og antal enheder");
-        } else {
+        }
             DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen,lægemiddel);
 
                 for (int i = 0; i < klokkeSlet.length; i++) {
@@ -85,8 +86,8 @@ public abstract class Controller {
                     dagligSkæv.addDosis(dosis);
                 }
                 patient.addOrdination(dagligSkæv);
-            }
-        return null;
+
+            return dagligSkæv;
     }
 
     /**
