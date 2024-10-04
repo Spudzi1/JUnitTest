@@ -107,11 +107,19 @@ class DagligFastTest {
 
     @Test
     void TC1_publicDagligFast(){
+        //Arrange
+        Lægemiddel lægemiddel = new Lægemiddel("Acetylsalicylsyre", 0.1,0.15,0.16,"Styk");
 
+        //Act
+        DagligFast dagligFast = new DagligFast(LocalDate.of(2024,9,10), LocalDate.of(2024,9,15), lægemiddel, 1,1,1,1);
 
+        // Assert
+        assertEquals(LocalDate.of(2024, 9, 10), dagligFast.getStartDato());
+        assertEquals(LocalDate.of(2024, 9, 15), dagligFast.getSlutDato()); // Rettet dato
+        assertEquals(lægemiddel, dagligFast.getLægemiddel());
+        assertNotNull(dagligFast);
 
     }
-
 
     @Test
     void TC1_getDoser_returnDoser() {
