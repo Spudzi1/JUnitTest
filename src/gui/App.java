@@ -13,13 +13,6 @@ public class App {
 
 		Application.launch(StartVindue.class);
 
-		//test
 	}
 
-	//Test
-	//Test2
-
-	//TEst3
-
-	//Test4
 }
