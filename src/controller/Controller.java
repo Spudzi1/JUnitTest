@@ -127,6 +127,9 @@ public abstract class Controller {
     public static int antalOrdinationerPrVægtPrLægemiddel(
             double vægtStart, double vægtSlut, Lægemiddel lægemiddel) {
 
+        if(vægtStart < 0 || vægtSlut < 0) {
+            throw new IllegalArgumentException("Kan ikke tage negativ vægt");
+        }
         int antalOrdinationer = 0;
 
         for (Patient patient : storage.getAllPatienter()) {

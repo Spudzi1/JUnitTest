@@ -2,7 +2,9 @@ package controller;
 
 import com.sun.scenario.animation.AnimationPulseMBean;
 import ordination.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import storage.Storage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -11,7 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
 
-
+    @BeforeEach
+    public void setUp() {
+        Storage storage = new Storage();
+    }
 
     @Test
     void TC1_opretPNOrdination() {
@@ -340,19 +345,60 @@ class ControllerTest {
     @Test
     void TC2_anbefaletDosisPrDøgn() {
         //Arrange
-        double vægt = 63.4;
-        Patient P1 = new Patient("123456-7890", "Jane Jensen", vægt);
+        double vægt = 18;
+        Patient P2 = new Patient("123456-7890", "Jane Jensen", vægt);
         Lægemiddel L1 = new Lægemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
 
         //Act
-        double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P1, L1);
-        double forventedeAnbefaletDosis = L1.getEnhedPrKgPrDøgnNormal() * vægt;
+        double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P2, L1);
+        double forventedeAnbefaletDosis = L1.getEnhedPrKgPrDøgnLet() * vægt;
 
         //Assert
         assertEquals(forventedeAnbefaletDosis, anbefaletDosis);
     }
 
     @Test
-    void antalOrdinationerPrVægtPrLægemiddel() {
+    void TC3_anbefaletDosisPrDøgn() {
+        //Arrange
+        double vægt = 125;
+        Patient P3 = new Patient("123456-7890", "Jane Jensen", vægt);
+        Lægemiddel L1 = new Lægemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
+
+        //Act
+        double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P3, L1);
+        double forventedeAnbefaletDosis = L1.getEnhedPrKgPrDøgnTung() * vægt;
+
+        //Assert
+        assertEquals(forventedeAnbefaletDosis, anbefaletDosis);
     }
+
+    @Test
+    void antalOrdinationerPrVægtPrLægemiddel() { //Storage problemer, jeg ik forstå
+        //Arrange
+        Storage storage = new Storage(); //Tjaa
+
+        Patient P1 = Controller.opretPatient("123456-7890", "Jane Jensen", 15.4);
+        Patient P2 = Controller.opretPatient("070985-1153", "Finn Madsen", 33.2);
+        Patient P3 = Controller.opretPatient("050972-1233", "Hans Jørgensen", 89.4);
+        Patient P4 = Controller.opretPatient("011064-1522", "Ulla Nielsen", 129.9);
+        Lægemiddel L1 = new Lægemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
+        DagligSkæv O1 = new DagligSkæv(LocalDate.of(2024, 9, 10), LocalDate.of(2024, 9, 12), L1);
+        DagligSkæv O2 = new DagligSkæv(LocalDate.of(2024, 9, 10), LocalDate.of(2024, 9, 11), L1);
+
+        P1.addOrdination(O1);
+        P2.addOrdination(O1);
+        P3.addOrdination(O1);
+        P4.addOrdination(O1);
+        P1.addOrdination(O2);
+        P3.addOrdination(O2);
+
+        //Act
+        double antalOrdinationer = Controller.antalOrdinationerPrVægtPrLægemiddel(63.4, 90, L1);
+
+        //Assert
+        assertEquals(2, antalOrdinationer);
+    }
+
+
+
 }
