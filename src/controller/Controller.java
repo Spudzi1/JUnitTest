@@ -72,9 +72,10 @@ public abstract class Controller {
 
         if(startDen.isAfter(slutDen)) {
             throw new IllegalArgumentException("Startdato er efter slutdato og du kan derfor ikke oprette ordinationen");
-        } else if (klokkeSlet.length != antalEnheder.length) {
+        }
+        if (klokkeSlet.length != antalEnheder.length) {
             throw new IllegalArgumentException("Forskel i antal tidspunkter og antal enheder");
-        } else {
+        }
             DagligSkæv dagligSkæv = new DagligSkæv(startDen, slutDen,lægemiddel);
 
                 for (int i = 0; i < klokkeSlet.length; i++) {
@@ -85,8 +86,8 @@ public abstract class Controller {
                     dagligSkæv.addDosis(dosis);
                 }
                 patient.addOrdination(dagligSkæv);
-            }
-        return null;
+
+            return dagligSkæv;
     }
 
     /**
