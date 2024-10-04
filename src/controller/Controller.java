@@ -28,7 +28,7 @@ public abstract class Controller {
         } else if (antal <= 0){
             throw new IllegalArgumentException("Antallet på ordinationen skal være større end 0");
         } else {
-            PN pn = new PN(startDato, slutDato, antal, patient, lægemiddel);
+            PN pn = new PN(startDato, slutDato, antal, lægemiddel);
             pn.setLægemiddel(lægemiddel);
             patient.addOrdination(pn);
             return pn;
