@@ -118,7 +118,7 @@ public abstract class Controller {
         } else {
             enhed = lægemiddel.getEnhedPrKgPrDøgnTung();
         }
-        return enhed;
+        return enhed * patient.getVægt();
     }
 
     /**

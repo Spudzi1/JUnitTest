@@ -269,9 +269,10 @@ class ControllerTest {
 
         //Act
         double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P1, L1);
+        double forventedeAnbefaletDosis = L1.getEnhedPrKgPrDøgnNormal() * vægt;
 
         //Assert
-        assertEquals(L1.getEnhedPrKgPrDøgnNormal(), anbefaletDosis);
+        assertEquals(forventedeAnbefaletDosis, anbefaletDosis);
     }
 
     @Test
@@ -283,9 +284,10 @@ class ControllerTest {
 
         //Act
         double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P1, L1);
+        double forventedeAnbefaletDosis = L1.getEnhedPrKgPrDøgnNormal() * vægt;
 
         //Assert
-        assertEquals(L1.getEnhedPrKgPrDøgnNormal(), anbefaletDosis);
+        assertEquals(forventedeAnbefaletDosis, anbefaletDosis);
     }
 
     @Test
