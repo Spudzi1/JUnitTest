@@ -12,6 +12,9 @@ public class DagligFast extends Ordination {
     public DagligFast(LocalDate startDato, LocalDate slutDato, Lægemiddel lægemiddel, double morgenDosis, double middagDosis, double aftenDosis, double natDosis) {
         super(startDato, slutDato, lægemiddel);
        doser = new Dosis[4];
+        if (morgenDosis < 0 || middagDosis < 0 || aftenDosis < 0 || natDosis < 0) {
+            throw new IllegalArgumentException("Doserne skal være større end eller lig med 0");
+        }
 
         if (morgenDosis>=0) {
             doser[0] = new Dosis(LocalTime.of(6,0), morgenDosis, null, this);
@@ -39,11 +42,14 @@ public class DagligFast extends Ordination {
         double dagligDosis = 0;
         for (Dosis dosis : doser) {
             dagligDosis += dosis.getAntal();
+            if (dagligDosis > 4) {
+                throw new IllegalArgumentException("Dosis må maks være 4");
+            }
         }
 
         // Tjek at startdatoen er før slutdatoen
         if (super.getStartDato().isAfter(super.getSlutDato())) {
-            throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre fordi slut datoen er før start datoen");
+            throw new IllegalArgumentException("Slut datoen er før start datoen");
         }
 
         // Beregn antal dage og den samlede dosis over perioden
@@ -57,7 +63,7 @@ public class DagligFast extends Ordination {
         double totalDosis = 0;
         for (Dosis dosis : doser) {
             if (dosis.getAntal() < 0) {
-                throw new IllegalArgumentException("Ordinationen kan ikke lade sig gøre, fordi samlet dosis må mindst være 0 doser pr. døgn");
+                throw new IllegalArgumentException("Samlet dosis må mindst være 0 doser pr. døgn");
             }
             totalDosis += dosis.getAntal();
         }
