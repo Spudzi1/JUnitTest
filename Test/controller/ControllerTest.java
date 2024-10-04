@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.scenario.animation.AnimationPulseMBean;
 import ordination.*;
 import org.junit.jupiter.api.Test;
 
@@ -169,12 +170,12 @@ class ControllerTest {
         };
 
         //Act
-        DagligSkæv DagligSkæv = Controller.opretDagligSkævOrdination(LocalDate.of(2024, 9, 20),
-                LocalDate.of(2024,9,30), P1, L1, tidspunkter, antal);
+        DagligSkæv DagligSkæv = Controller.opretDagligSkævOrdination(LocalDate.of(2024, 8, 30),
+                LocalDate.of(2024,8,30), P1, L1, tidspunkter, antal);
 
         //Assert
-        assertEquals(LocalDate.of(2024,9,20), DagligSkæv.getStartDato());
-        assertEquals(LocalDate.of(2024,9,30), DagligSkæv.getSlutDato());
+        assertEquals(LocalDate.of(2024,8,30), DagligSkæv.getStartDato());
+        assertEquals(LocalDate.of(2024,8,30), DagligSkæv.getSlutDato());
         assertEquals(true, P1.getOrdinationer().contains(DagligSkæv));
         assertEquals(L1, DagligSkæv.getLægemiddel());
         assertEquals(5, DagligSkæv.getDoser().size());
@@ -189,7 +190,31 @@ class ControllerTest {
     }
 
     @Test
-    void anbefaletDosisPrDøgn() {
+    void TC1_anbefaletDosisPrDøgn() {
+        //Arrange
+        double vægt = 63.4;
+        Patient P1 = new Patient("123456-7890", "Jane Jensen", vægt);
+        Lægemiddel L1 = new Lægemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
+
+        //Act
+        double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P1, L1);
+
+        //Assert
+        assertEquals(L1.getEnhedPrKgPrDøgnNormal(), anbefaletDosis);
+    }
+
+    @Test
+    void TC2_anbefaletDosisPrDøgn() {
+        //Arrange
+        double vægt = 63.4;
+        Patient P1 = new Patient("123456-7890", "Jane Jensen", vægt);
+        Lægemiddel L1 = new Lægemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
+
+        //Act
+        double anbefaletDosis = Controller.anbefaletDosisPrDøgn(P1, L1);
+
+        //Assert
+        assertEquals(L1.getEnhedPrKgPrDøgnNormal(), anbefaletDosis);
     }
 
     @Test
