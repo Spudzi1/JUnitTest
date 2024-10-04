@@ -1,7 +1,9 @@
 package ordination;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PN extends Ordination {
@@ -46,16 +48,17 @@ public class PN extends Ordination {
 
     @Override
     public double samletDosis() {
-        double samletDosis = 0;
-        for (LocalDate date : anvendteDoser) {
-            samletDosis += antalEnheder;
-        }
-        return samletDosis;
+        return antalEnheder * anvendteDoser.size();
     }
 
     @Override
     public double døgnDosis() {
-        return samletDosis() / antalDage();
+        if (anvendteDoser.isEmpty()) return 0;
+        Collections.sort(anvendteDoser);
+        LocalDate førstAnvendt = anvendteDoser.getFirst();
+        LocalDate sidstAnvendt = anvendteDoser.getLast();
+        long dagsinterval = ChronoUnit.DAYS.between(førstAnvendt, sidstAnvendt) + 1;
+        return samletDosis() / dagsinterval;
     }
 
     @Override

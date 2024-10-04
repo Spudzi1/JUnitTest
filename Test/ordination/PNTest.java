@@ -3,6 +3,7 @@ package ordination;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,25 +32,16 @@ public class PNTest {
 
         //Arrange
         Lægemiddel paracetamol = new Lægemiddel("Paracetamol", 0.1, 0.15, 0.16, "Styk");
+        PN pn = new PN(LocalDate.of(2024, 9, 6), LocalDate.of(2024, 9, 8), 5, paracetamol);
+
 
         //Act
-        PN pn = new PN(LocalDate.of(2024, 9, 6), LocalDate.of(2024, 9, 8), 123, paracetamol);
+        pn.addAnvendtDosis(LocalDate.of(2024,9,6));
+        pn.addAnvendtDosis(LocalDate.of(2024,9,7));
+        double samletDosis = pn.samletDosis();
 
-        // assert
-        assertEquals(LocalDate.of(2024, 9, 6), pn.getStartDato());
-        assertEquals(LocalDate.of(2024, 9, 16), pn.getSlutDato());
-        assertEquals(123, pn.getAntalEnheder());
-        assertEquals(paracetamol, pn.getLægemiddel());
-        assertEquals(new ArrayList<LocalDate>(), pn.getAnvendteDoser());
+        //Assert
+        assertEquals(10, samletDosis);
     }
 
-
-    // @Override
-    //    public double samletDosis() {
-    //        double samletDosis = 0;
-    //        for (LocalDate date : anvendteDoser) {
-    //            samletDosis += antalEnheder;
-    //        }
-    //        return samletDosis;
-    //    }
 }
