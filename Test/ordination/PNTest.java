@@ -7,11 +7,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PNTest {
     @Test
-    void constructorPN() {
+    void tc1_constructorPN() {
 
         //Arrange
         Lægemiddel paracetamol = new Lægemiddel("Paracetamol", 0.1, 0.15, 0.16, "Styk");
@@ -28,7 +28,7 @@ public class PNTest {
     }
 
     @Test
-    void samletDosis() {
+    void tc1_samletDosis() {
 
         //Arrange
         Lægemiddel paracetamol = new Lægemiddel("Paracetamol", 0.1, 0.15, 0.16, "Styk");

@@ -130,7 +130,7 @@ public abstract class Controller {
         int antalOrdinationer = 0;
 
         for (Patient patient : storage.getAllPatienter()) {
-            if (patient.getVægt() > vægtSlut && patient.getVægt() < vægtSlut && lægemiddel == lægemiddel) {
+            if (patient.getVægt() > vægtStart && patient.getVægt() < vægtSlut && lægemiddel == lægemiddel) {
                 for (Ordination ordination : patient.getOrdinationer()) {
                     antalOrdinationer++;
                 }
