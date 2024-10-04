@@ -14,9 +14,80 @@ class ControllerTest {
 
 
     @Test
-    void opretPNOrdination() {
+    void TC1_opretPNOrdination() {
+        //Arrange
+        Lægemiddel lægemiddel = new Lægemiddel("Paracetamol", 1, 1.5, 2, "Ml");
+        Patient patient = new Patient("123456-7890", "Jane Jensen", 63.4);
+        LocalDate startDato = LocalDate.of(2024, 9, 20);
+        LocalDate slutDato = LocalDate.of(2024, 9, 30);
 
+        //Act
+        PN pn = Controller.opretPNOrdination(startDato, slutDato, patient, lægemiddel, 123);
+
+        //Assert
+        assertNotNull(pn);
+        assertEquals(LocalDate.of(2024, 9, 20), pn.getStartDato());
+        assertEquals(LocalDate.of(2024, 9, 30), pn.getSlutDato());
+        assertEquals(lægemiddel, pn.getLægemiddel());
+        assertTrue(patient.getOrdinationer().contains(pn));
     }
+
+    @Test
+    void TC2_opretPNOrdination() {
+        //Arrange
+        Lægemiddel lægemiddel = new Lægemiddel("Paracetamol", 1, 1.5, 2, "Ml");
+        Patient patient = new Patient("123456-7890", "Jane Jensen", 63.4);
+        LocalDate startDato = LocalDate.of(2024, 8, 8);
+        LocalDate slutDato = LocalDate.of(2024, 8, 8);
+
+        //Act
+        PN pn = Controller.opretPNOrdination(startDato, slutDato, patient, lægemiddel, 123);
+
+        //Assert
+        assertNotNull(pn);
+        assertEquals(LocalDate.of(2024, 8, 8), pn.getStartDato());
+        assertEquals(LocalDate.of(2024, 8, 8), pn.getSlutDato());
+        assertEquals(lægemiddel, pn.getLægemiddel());
+        assertTrue(patient.getOrdinationer().contains(pn));
+    }
+
+    @Test
+    void TC3_opretPNOrdination(){
+        //Arrange
+        Lægemiddel lægemiddel = new Lægemiddel("Paracetamol", 1, 1.5, 2, "Ml");
+        Patient patient = new Patient("123456-7890", "Jane Jensen", 63.4);
+        LocalDate startDato = LocalDate.of(2024, 8, 29);
+        LocalDate slutDato = LocalDate.of(2024, 8, 27);
+
+        //Act
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            Controller.opretPNOrdination(startDato, slutDato, patient, lægemiddel, 123);
+        });
+
+        //Assert
+        assertAll(exception.getMessage(), () -> {
+            assertEquals("Startdato er efter slutdato og du kan derfor ikke oprette ordinationen", exception.getMessage());
+        });
+    }
+    @Test
+    void TC4_opretPNOrdination(){
+        //Arrange
+        Lægemiddel lægemiddel = new Lægemiddel("Paracetamol", 1, 1.5, 2, "Ml");
+        Patient patient = new Patient("123456-7890", "Jane Jensen", 63.4);
+        LocalDate startDato = LocalDate.of(2024, 8, 8);
+        LocalDate slutDato = LocalDate.of(2024, 9, 30);
+
+        //Act
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            Controller.opretPNOrdination(startDato, slutDato, patient, lægemiddel, 0);
+        });
+
+        //Assert
+        assertAll(exception.getMessage(), () -> {
+            assertEquals("Antallet på ordinationen skal være større end 0", exception.getMessage());
+        });
+    }
+
 
     @Test
     void TC1_opretDagligFastOrdination() {
